@@ -1,5 +1,6 @@
 package com.zingtongroup.atg.codetest.web;
 
+import com.zingtongroup.atg.codetest.web.model.HomePage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

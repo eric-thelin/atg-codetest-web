@@ -1,4 +1,4 @@
-package com.zingtongroup.atg.codetest.web;
+package com.zingtongroup.atg.codetest.web.model;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,14 +13,14 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfEl
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
-class HomePage {
+public class HomePage {
 	private final WebDriver driver;
 
-	HomePage(WebDriver driver) {
+	public HomePage(WebDriver driver) {
 		this.driver = driver;
 	}
 
-	HomePage visit() {
+	public HomePage visit() {
 		driver.get("https://www.atg.se/");
 
 		pause().until(titleIs("ATG - Spel på Sport, Häst och Casino"));
@@ -28,7 +28,7 @@ class HomePage {
 		return this;
 	}
 
-	HomePage acceptCookies() {
+	public HomePage acceptCookies() {
 		pause().until(visibilityOfElementLocated(By.id("onetrust-banner-sdk")))
 				.findElement(By.id("onetrust-accept-btn-handler"))
 				.click();
@@ -37,7 +37,7 @@ class HomePage {
 		return this;
 	}
 
-	void selectV4Game() {
+	public void selectV4Game() {
 		driver.findElement(By.id("MENU_PLAY_button")).click();
 		pause().until(visibilityOfElementLocated(By.id("SideMenu_menu")));
 		pause().until(elementToBeClickable(

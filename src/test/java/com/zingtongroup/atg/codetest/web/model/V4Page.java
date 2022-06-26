@@ -1,4 +1,4 @@
-package com.zingtongroup.atg.codetest.web;
+package com.zingtongroup.atg.codetest.web.model;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
