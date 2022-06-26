@@ -41,3 +41,13 @@ done
 >&2 echo "Selenium Grid is up - executing tests"
 mvn clean test
 ```
+
+**Note:** The docker-compose.yaml assumes an ARM architecture and has been
+tested on an M1 MacBook. If you get errors like the one below, please try [the
+Intel specific configuration](docker-compose.intel.yaml) instead.
+
+```
+SessionNotCreated Could not start a new session. Response code 500. Message:
+Could not start a new session. Could not start a new session. Error while
+creating session with the driver service.
+```
