@@ -6,11 +6,13 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.util.Objects.requireNonNull;
+
 public class V4RaceRow {
 	private final WebElement root;
 
 	V4RaceRow(WebElement root) {
-		this.root = root;
+		this.root = requireNonNull(root);
 	}
 
 	public void markNumberOfHorses(int numberOfHorsesToMark) {

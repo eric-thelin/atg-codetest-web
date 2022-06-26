@@ -5,11 +5,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static java.util.Objects.requireNonNull;
+
 class Page {
 	final WebDriver driver;
 
 	Page(WebDriver driver) {
-		this.driver = driver;
+		this.driver = requireNonNull(driver);
 	}
 
 	WebDriverWait pause() {
