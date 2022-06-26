@@ -25,7 +25,7 @@ public class SeleniumWebTest {
 	}
 
 	@Test
-	void visitSite() {
+	void playV4() {
 		new HomePage(driver)
 				.visit()
 				.acceptCookies()
