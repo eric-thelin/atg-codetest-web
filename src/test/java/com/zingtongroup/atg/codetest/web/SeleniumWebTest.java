@@ -7,8 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class SeleniumWebTest {
 
 	private WebDriver driver;
@@ -27,10 +25,6 @@ public class SeleniumWebTest {
 
 	@Test
 	void visitSite() {
-		// When
-		driver.get("https://www.atg.se/");
-
-		// Then
-		assertEquals("ATG - Spel på Sport, Häst och Casino", driver.getTitle());
+		new HomePage(driver).visit();
 	}
 }
