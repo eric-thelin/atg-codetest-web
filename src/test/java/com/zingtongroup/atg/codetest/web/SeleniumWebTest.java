@@ -29,6 +29,7 @@ public class SeleniumWebTest {
 		new HomePage(driver)
 				.visit()
 				.acceptCookies()
-				.selectV4Game();
+				.selectV4Game()
+				.createNewCoupon();
 	}
 }

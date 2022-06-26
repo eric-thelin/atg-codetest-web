@@ -33,7 +33,7 @@ public class HomePage extends Page {
 		return this;
 	}
 
-	public void selectV4Game() {
+	public V4Page selectV4Game() {
 		driver.findElement(By.id("MENU_PLAY_button")).click();
 		pause().until(visibilityOfElementLocated(By.id("SideMenu_menu")));
 		pause().until(elementToBeClickable(
@@ -46,7 +46,7 @@ public class HomePage extends Page {
 		new Actions(driver).scrollToElement(item).build().perform();
 		pause().until(elementToBeClickable(item)).click();
 
-		new V4Page(driver).awaitReady();
+		return new V4Page(driver).awaitReady();
 	}
 
 }
