@@ -1,13 +1,13 @@
-package com.zingtongroup.atg.codetest.web;
+package se.ericthelin.atg.codetest.web;
 
-import com.zingtongroup.atg.codetest.web.model.HomePage;
-import com.zingtongroup.atg.codetest.web.model.V4Page;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import se.ericthelin.atg.codetest.web.model.HomePage;
+import se.ericthelin.atg.codetest.web.model.V4Page;
 
 public class SeleniumWebTest {
 

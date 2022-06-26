@@ -1,4 +1,4 @@
-package com.zingtongroup.atg.codetest.web.model;
+package se.ericthelin.atg.codetest.web.model;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

@@ -17,7 +17,7 @@
 ## Solution
 
 The test is found in
-[SeleniumWebTest](src/test/java/com/zingtongroup/atg/codetest/web/SeleniumWebTest.java).
+[SeleniumWebTest](src/test/java/se/ericthelin/atg/codetest/web/SeleniumWebTest.java).
 I have tried to push as much as possible of the technical details into
 supporting page objects so that the actual test is readable and using business
 language.
