@@ -37,5 +37,7 @@ public class SeleniumWebTest {
 		v4Page.getRace(2).markNumberOfHorses(1);
 		v4Page.getRace(3).markNumberOfHorses(2);
 		v4Page.getRace(4).markAllHorses();
+
+		v4Page.playCoupon();
 	}
 }

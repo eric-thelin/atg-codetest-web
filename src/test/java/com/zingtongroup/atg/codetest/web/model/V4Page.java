@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
+import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleContains;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
@@ -29,6 +30,18 @@ public class V4Page extends Page {
 		pause().until(invisibilityOf(modal));
 
 		return this;
+	}
+
+	public void playCoupon() {
+		pause().until(invisibilityOfElementLocated(
+				By.cssSelector("[data-test-id=auth-modal]")
+		));
+		driver.findElement(
+				By.cssSelector("[data-test-id=play-game-coupon]")
+		).click();
+		pause().until(visibilityOfElementLocated(
+				By.cssSelector("[data-test-id=auth-modal]")
+		));
 	}
 
 	public V4RaceRow getRace(int raceNumber) {
