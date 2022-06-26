@@ -46,7 +46,6 @@ public class V4Page extends Page {
 
 	public V4RaceRow getRace(int raceNumber) {
 		return new V4RaceRow(
-				driver,
 				driver.findElement(By.cssSelector(String.format(
 						"[data-test-id=coupon-race-%d]", raceNumber
 				))));

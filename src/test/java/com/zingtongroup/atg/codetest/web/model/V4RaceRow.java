@@ -1,7 +1,6 @@
 package com.zingtongroup.atg.codetest.web.model;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.stream.Stream;
 public class V4RaceRow {
 	private final WebElement root;
 
-	V4RaceRow(WebDriver driver, WebElement root) {
+	V4RaceRow(WebElement root) {
 		this.root = root;
 	}
 
