@@ -20,19 +20,19 @@ class HomePage {
 	HomePage visit() {
 		driver.get("https://www.atg.se/");
 
-		new WebDriverWait(driver, Duration.ofSeconds(1)).until(
-				titleIs("ATG - Spel på Sport, Häst och Casino")
-		);
+		pause().until(titleIs("ATG - Spel på Sport, Häst och Casino"));
 
 		return this;
 	}
 
 	void acceptCookies() {
-		new WebDriverWait(driver, Duration.ofSeconds(1)).until(
-				visibilityOfElementLocated(By.id("onetrust-banner-sdk"))
-		).findElement(By.id("onetrust-accept-btn-handler")).click();
-		new WebDriverWait(driver, Duration.ofSeconds(1)).until(
-				invisibilityOfElementLocated(By.id("onetrust-banner-sdk"))
-		);
+		pause().until(visibilityOfElementLocated(By.id("onetrust-banner-sdk")))
+				.findElement(By.id("onetrust-accept-btn-handler"))
+				.click();
+		pause().until(invisibilityOfElementLocated(By.id("onetrust-banner-sdk")));
+	}
+
+	private WebDriverWait pause() {
+		return new WebDriverWait(driver, Duration.ofSeconds(1));
 	}
 }
