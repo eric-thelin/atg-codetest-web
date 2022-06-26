@@ -42,6 +42,9 @@ done
 mvn clean test
 ```
 
+To view the browser window while the test is running you can connect using
+remote desktop to `localhost:5900` using password `secret`.
+
 **Note:** The docker-compose.yaml assumes an ARM architecture and has been
 tested on an M1 MacBook. If you get errors like the one below, please try [the
 Intel specific configuration](docker-compose.intel.yaml) instead.
