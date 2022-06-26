@@ -4,20 +4,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
-public class HomePage {
-	private final WebDriver driver;
+public class HomePage extends Page {
 
 	public HomePage(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 	}
 
 	public HomePage visit() {
@@ -53,7 +49,4 @@ public class HomePage {
 		new V4Page(driver).awaitReady();
 	}
 
-	private WebDriverWait pause() {
-		return new WebDriverWait(driver, Duration.ofSeconds(1));
-	}
 }
