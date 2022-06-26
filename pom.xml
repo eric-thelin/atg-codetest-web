@@ -17,6 +17,11 @@
 			<version>5.9.0-M1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.2.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
