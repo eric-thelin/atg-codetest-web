@@ -1,6 +1,7 @@
 package com.zingtongroup.atg.codetest.web;
 
 import com.zingtongroup.atg.codetest.web.model.HomePage;
+import com.zingtongroup.atg.codetest.web.model.V4Page;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,10 +27,12 @@ public class SeleniumWebTest {
 
 	@Test
 	void playV4() {
-		new HomePage(driver)
+		V4Page v4Page = new HomePage(driver)
 				.visit()
 				.acceptCookies()
 				.selectV4Game()
 				.createNewCoupon();
+
+		v4Page.getFirstRace().markNumberOfHorses(4);
 	}
 }

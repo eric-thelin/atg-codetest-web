@@ -21,11 +21,20 @@ public class V4Page extends Page {
 		return this;
 	}
 
-	public void createNewCoupon() {
+	public V4Page createNewCoupon() {
 		driver.findElement(By.cssSelector("[data-test-id=new-coupon]")).click();
 
 		WebElement modal = pause().until(visibilityOfElementLocated(By.cssSelector("[data-test-id=modal]")));
 		pause().until(elementToBeClickable(By.xpath("//button[text()='Tom kupong']"))).click();
 		pause().until(invisibilityOf(modal));
+
+		return this;
+	}
+
+	public V4RaceRow getFirstRace() {
+		return new V4RaceRow(
+				driver,
+				driver.findElement(By.cssSelector("[data-test-id=coupon-race-1]"))
+		);
 	}
 }
