@@ -33,6 +33,9 @@ public class SeleniumWebTest {
 				.selectV4Game()
 				.createNewCoupon();
 
-		v4Page.getFirstRace().markNumberOfHorses(4);
+		v4Page.getRace(1).markNumberOfHorses(4);
+		v4Page.getRace(2).markNumberOfHorses(1);
+		v4Page.getRace(3).markNumberOfHorses(2);
+		v4Page.getRace(4).markAllHorses();
 	}
 }

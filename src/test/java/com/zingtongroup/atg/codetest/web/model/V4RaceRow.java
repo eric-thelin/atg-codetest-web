@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class V4RaceRow {
 	private final WebElement root;
@@ -14,9 +15,9 @@ public class V4RaceRow {
 	}
 
 	public void markNumberOfHorses(int numberOfHorsesToMark) {
-		List<WebElement> starts = root.findElements(By.cssSelector(
-				"[data-test-id=start-button-with-tooltip] button[data-test-scratched=false]"
-		)).stream().limit(numberOfHorsesToMark).toList();
+		List<WebElement> starts = streamStarts()
+				.limit(numberOfHorsesToMark)
+				.toList();
 
 		if (starts.size() < numberOfHorsesToMark) {
 			throw new IllegalArgumentException(String.format(
@@ -27,5 +28,15 @@ public class V4RaceRow {
 		}
 
 		starts.forEach(WebElement::click);
+	}
+
+	public void markAllHorses() {
+		streamStarts().forEach(WebElement::click);
+	}
+
+	private Stream<WebElement> streamStarts() {
+		return root.findElements(By.cssSelector(
+				"[data-test-id=start-button-with-tooltip] button[data-test-scratched=false]"
+		)).stream().filter(WebElement::isEnabled);
 	}
 }

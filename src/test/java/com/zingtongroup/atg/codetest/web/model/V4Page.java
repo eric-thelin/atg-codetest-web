@@ -31,10 +31,11 @@ public class V4Page extends Page {
 		return this;
 	}
 
-	public V4RaceRow getFirstRace() {
+	public V4RaceRow getRace(int raceNumber) {
 		return new V4RaceRow(
 				driver,
-				driver.findElement(By.cssSelector("[data-test-id=coupon-race-1]"))
-		);
+				driver.findElement(By.cssSelector(String.format(
+						"[data-test-id=coupon-race-%d]", raceNumber
+				))));
 	}
 }
