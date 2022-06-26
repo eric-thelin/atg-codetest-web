@@ -25,6 +25,9 @@ public class SeleniumWebTest {
 
 	@Test
 	void visitSite() {
-		new HomePage(driver).visit().acceptCookies();
+		new HomePage(driver)
+				.visit()
+				.acceptCookies()
+				.selectV4Game();
 	}
 }
