@@ -8,7 +8,10 @@ class RealFileSystem implements FileSystem {
 	@Override
 	public void write(byte[] source, File destination) throws IOException {
 		if (!destination.getParentFile().exists() && !destination.getParentFile().mkdirs()) {
-			System.err.println("Could not create screenshot directory");
+			throw new IOException(String.format(
+					"Could not create screenshot directory \"%s\"",
+					destination.getParentFile()
+			));
 		}
 		Files.write(destination.toPath(), source);
 	}

@@ -18,6 +18,6 @@ class PrintStreamScreenshotLog implements ScreenshotLog {
 
 	@Override
 	public void recordFailureToSaveScreenshot(File destination, IOException cause) {
-		target.println("Failed to save screenshot");
+		target.println("Failed to save screenshot. Cause: " + cause.getMessage());
 	}
 }

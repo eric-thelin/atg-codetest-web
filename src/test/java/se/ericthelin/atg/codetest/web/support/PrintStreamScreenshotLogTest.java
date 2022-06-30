@@ -27,9 +27,12 @@ class PrintStreamScreenshotLogTest {
 	@Test
 	void printsFailure() {
 		// When
-		subject.recordFailureToSaveScreenshot(new File("foo.png"), new IOException());
+		subject.recordFailureToSaveScreenshot(new File("foo.png"), new IOException("Original message"));
 
 		// Then
-		assertEquals("Failed to save screenshot\n", destination.toString(StandardCharsets.UTF_8));
+		assertEquals(
+				"Failed to save screenshot. Cause: Original message\n",
+				destination.toString(StandardCharsets.UTF_8)
+		);
 	}
 }
