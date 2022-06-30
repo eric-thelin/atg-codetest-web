@@ -6,6 +6,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.function.Function;
 
 class ScreenshotRecorder implements WebDriverFailureListener {
@@ -28,7 +30,9 @@ class ScreenshotRecorder implements WebDriverFailureListener {
 		if (!destination.getParentFile().exists() && !destination.getParentFile().mkdirs()) {
 			System.err.println("Could not create screenshot directory");
 		}
-		if (!source.getScreenshotAs(OutputType.FILE).renameTo(destination)) {
+		try {
+			Files.write(destination.toPath(), source.getScreenshotAs(OutputType.BYTES));
+		} catch (IOException e) {
 			System.err.println("Could not save screenshot");
 		}
 	}

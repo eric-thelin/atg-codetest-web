@@ -13,7 +13,9 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -30,28 +32,27 @@ class ScreenshotRecorderTest {
 
 	@TempDir
 	private File targetDirectory;
-	private File sourceScreenshot;
 	private File destinationScreenshot;
 
 	private ScreenshotRecorder subject;
 
 	@BeforeEach
-	void setUp() throws IOException {
-		sourceScreenshot = File.createTempFile("source", ".png", targetDirectory);
-		destinationScreenshot = new File(targetDirectory, "destination.png");
+	void setUp() {
+		destinationScreenshot = new File(targetDirectory, "screenshot.png");
 		subject = new ScreenshotRecorder(context -> destinationScreenshot);
 	}
 
 	@Test
-	void recordsScreenshot() {
+	void recordsScreenshot() throws IOException {
 		// Given
-		given(driver.getScreenshotAs(OutputType.FILE)).willReturn(sourceScreenshot);
+		given(driver.getScreenshotAs(OutputType.BYTES)).willReturn("screenshot".getBytes());
 
 		// When
 		subject.processFailure(context, (WebDriver) driver);
 
 		// Then
 		assertTrue(destinationScreenshot.exists());
+		assertEquals("screenshot", contentsOf(destinationScreenshot));
 	}
 
 	@Test
@@ -61,5 +62,9 @@ class ScreenshotRecorderTest {
 
 		// Then
 		assertFalse(destinationScreenshot.exists());
+	}
+
+	private String contentsOf(File source) throws IOException {
+		return Files.readString(source.toPath());
 	}
 }
