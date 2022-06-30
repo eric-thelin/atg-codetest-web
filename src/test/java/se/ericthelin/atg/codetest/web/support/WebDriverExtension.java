@@ -1,4 +1,4 @@
-package se.ericthelin.atg.codetest.web;
+package se.ericthelin.atg.codetest.web.support;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -10,11 +10,11 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
 
-class WebDriverExtension implements AfterEachCallback {
+public class WebDriverExtension implements AfterEachCallback {
 
 	private WebDriver driver;
 
-	WebDriver getDriver() {
+	public WebDriver getDriver() {
 		if (driver == null) {
 			driver = new RemoteWebDriver(new ChromeOptions());
 		}

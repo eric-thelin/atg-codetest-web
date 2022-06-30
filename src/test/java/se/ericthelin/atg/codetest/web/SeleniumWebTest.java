@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import se.ericthelin.atg.codetest.web.model.HomePage;
 import se.ericthelin.atg.codetest.web.model.V4Page;
+import se.ericthelin.atg.codetest.web.support.WebDriverExtension;
 
 public class SeleniumWebTest {
 
