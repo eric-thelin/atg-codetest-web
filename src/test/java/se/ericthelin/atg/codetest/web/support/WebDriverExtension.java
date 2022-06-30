@@ -9,19 +9,27 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class WebDriverExtension implements AfterEachCallback {
 
 	private final Supplier<WebDriver> driverSource;
+	private final Function<ExtensionContext, File> screenshotDestination;
 	private WebDriver driver;
 
 	public WebDriverExtension() {
-		this(() -> new RemoteWebDriver(new ChromeOptions()));
+		this(() -> new RemoteWebDriver(new ChromeOptions()),
+				context -> new File(context.getUniqueId() + ".failure.png")
+		);
 	}
 
-	WebDriverExtension(Supplier<WebDriver> driverSource) {
+	WebDriverExtension(
+			Supplier<WebDriver> driverSource,
+			Function<ExtensionContext, File> screenshotDestination
+	) {
 		this.driverSource = driverSource;
+		this.screenshotDestination = screenshotDestination;
 	}
 
 	public WebDriver getDriver() {
@@ -44,13 +52,13 @@ public class WebDriverExtension implements AfterEachCallback {
 
 	private void handleFailure(ExtensionContext context) {
 		if (driver instanceof TakesScreenshot source) {
-			recordScreenshot(source, new File(context.getUniqueId() + ".failure.png").getAbsoluteFile());
+			recordScreenshot(source, screenshotDestination.apply(context).getAbsoluteFile());
 		}
 	}
 
 	private void recordScreenshot(TakesScreenshot source, File destination) {
 		System.err.printf("Saving screenshot to \"%s\"%n", destination);
-		if (!destination.getParentFile().mkdirs()) {
+		if (!destination.getParentFile().exists() && !destination.getParentFile().mkdirs()) {
 			System.err.println("Could not create screenshot directory");
 		}
 		if (!source.getScreenshotAs(OutputType.FILE).renameTo(destination)) {
