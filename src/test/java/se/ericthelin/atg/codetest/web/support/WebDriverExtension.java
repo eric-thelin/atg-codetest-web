@@ -9,14 +9,24 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
+import java.util.function.Supplier;
 
 public class WebDriverExtension implements AfterEachCallback {
 
+	private final Supplier<WebDriver> driverSource;
 	private WebDriver driver;
+
+	public WebDriverExtension() {
+		this(() -> new RemoteWebDriver(new ChromeOptions()));
+	}
+
+	WebDriverExtension(Supplier<WebDriver> driverSource) {
+		this.driverSource = driverSource;
+	}
 
 	public WebDriver getDriver() {
 		if (driver == null) {
-			driver = new RemoteWebDriver(new ChromeOptions());
+			driver = driverSource.get();
 		}
 		return driver;
 	}
@@ -34,12 +44,12 @@ public class WebDriverExtension implements AfterEachCallback {
 
 	private void handleFailure(ExtensionContext context) {
 		if (driver instanceof TakesScreenshot source) {
-			recordScreenshot(source, new File(context.getUniqueId() + ".failure.png"));
+			recordScreenshot(source, new File(context.getUniqueId() + ".failure.png").getAbsoluteFile());
 		}
 	}
 
 	private void recordScreenshot(TakesScreenshot source, File destination) {
-		System.err.printf("Saving screenshot to \"%s\"%n", destination.getAbsolutePath());
+		System.err.printf("Saving screenshot to \"%s\"%n", destination);
 		if (!destination.getParentFile().mkdirs()) {
 			System.err.println("Could not create screenshot directory");
 		}
