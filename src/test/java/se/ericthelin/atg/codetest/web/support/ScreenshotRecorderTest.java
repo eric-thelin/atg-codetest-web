@@ -28,14 +28,14 @@ class ScreenshotRecorderTest {
 	@Mock
 	private FileSystem fileSystem;
 
-	private final File destinationScreenshot = new File("screenshot.png");
+	private final File screenshotDestination = new File("screenshot.png");
 
 	private ScreenshotRecorder subject;
 
 	@BeforeEach
 	void setUp() {
 		subject = new ScreenshotRecorder(
-				context -> destinationScreenshot, fileSystem
+				context -> screenshotDestination, fileSystem
 		);
 	}
 
@@ -50,7 +50,7 @@ class ScreenshotRecorderTest {
 		// Then
 		verify(fileSystem).write(
 				"screenshot".getBytes(),
-				destinationScreenshot.getAbsoluteFile()
+				screenshotDestination.getAbsoluteFile()
 		);
 	}
 
