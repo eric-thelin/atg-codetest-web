@@ -1,33 +1,18 @@
 package se.ericthelin.atg.codetest.web;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import se.ericthelin.atg.codetest.web.model.HomePage;
 import se.ericthelin.atg.codetest.web.model.V4Page;
 
 public class SeleniumWebTest {
 
-	private WebDriver driver;
-
-	@BeforeEach
-	void createDriver() {
-		driver = new RemoteWebDriver(new ChromeOptions());
-	}
-
-	@AfterEach
-	void quitDriver() {
-		if (driver != null) {
-			driver.quit();
-		}
-	}
+	@RegisterExtension
+	WebDriverExtension selenium = new WebDriverExtension();
 
 	@Test
 	void playV4() {
-		V4Page v4Page = new HomePage(driver)
+		V4Page v4Page = new HomePage(selenium.getDriver())
 				.visit()
 				.acceptCookies()
 				.selectV4Game()
