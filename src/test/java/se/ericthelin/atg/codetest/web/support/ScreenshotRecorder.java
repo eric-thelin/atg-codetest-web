@@ -12,17 +12,22 @@ class ScreenshotRecorder implements WebDriverFailureListener {
 
 	private final Function<ExtensionContext, File> screenshotDestination;
 	private final FileSystem fileSystem;
+	private final ScreenshotLog log;
 
 	ScreenshotRecorder(Function<ExtensionContext, File> screenshotDestination) {
-		this(screenshotDestination, new RealFileSystem());
+		this(screenshotDestination,
+				new PrintStreamScreenshotLog(System.err),
+				new RealFileSystem()
+		);
 	}
 
 	ScreenshotRecorder(
 			Function<ExtensionContext, File> screenshotDestination,
-			FileSystem fileSystem
+			ScreenshotLog log, FileSystem fileSystem
 	) {
 		this.screenshotDestination = screenshotDestination;
 		this.fileSystem = fileSystem;
+		this.log = log;
 	}
 
 	@Override
@@ -33,7 +38,7 @@ class ScreenshotRecorder implements WebDriverFailureListener {
 	}
 
 	private void recordScreenshot(TakesScreenshot source, File destination) {
-		System.err.printf("Saving screenshot to \"%s\"%n", destination);
+		log.recordAttemptToSaveScreenshot(destination);
 		fileSystem.write(source.getScreenshotAs(OutputType.BYTES), destination);
 	}
 }

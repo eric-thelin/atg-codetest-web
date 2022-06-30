@@ -27,7 +27,8 @@ class ScreenshotRecorderTest {
 	private ExtensionContext context;
 	@Mock
 	private FileSystem fileSystem;
-
+	@Mock
+	private ScreenshotLog log;
 	private final File screenshotDestination = new File("screenshot.png");
 
 	private ScreenshotRecorder subject;
@@ -35,7 +36,7 @@ class ScreenshotRecorderTest {
 	@BeforeEach
 	void setUp() {
 		subject = new ScreenshotRecorder(
-				context -> screenshotDestination, fileSystem
+				context -> screenshotDestination, log, fileSystem
 		);
 	}
 
@@ -48,6 +49,9 @@ class ScreenshotRecorderTest {
 		subject.processFailure(context, (WebDriver) driver);
 
 		// Then
+		verify(log).recordAttemptToSaveScreenshot(
+				screenshotDestination.getAbsoluteFile()
+		);
 		verify(fileSystem).write(
 				"screenshot".getBytes(),
 				screenshotDestination.getAbsoluteFile()
@@ -60,6 +64,6 @@ class ScreenshotRecorderTest {
 		subject.processFailure(context, mock(WebDriver.class));
 
 		// Then
-		verifyNoInteractions(fileSystem);
+		verifyNoInteractions(log, fileSystem);
 	}
 }
