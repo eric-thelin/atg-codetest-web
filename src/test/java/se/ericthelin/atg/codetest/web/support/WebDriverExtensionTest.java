@@ -15,9 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -32,10 +31,17 @@ class WebDriverExtensionTest {
 	private ExtensionContext context;
 	private WebDriverExtension subject;
 
+	@TempDir
+	private File targetDirectory;
+	private File sourceScreenshot;
+	private File destinationScreenshot;
+
 	@BeforeEach
-	void setUp() {
+	void setUp() throws IOException {
+		sourceScreenshot = File.createTempFile("source", ".png", targetDirectory);
+		destinationScreenshot = new File(targetDirectory, "destination.png");
 		subject = new WebDriverExtension(
-				() -> driver, context -> fail("Should not be called")
+				() -> driver, context -> destinationScreenshot
 		);
 	}
 
@@ -61,20 +67,17 @@ class WebDriverExtensionTest {
 	}
 
 	@Test
-	void recordsScreenshotOnTestFailure(@TempDir File targetDirectory) throws IOException {
+	void recordsScreenshotOnTestFailure() {
 		// Given
-		File original = File.createTempFile("source", ".png", targetDirectory);
-		File destination = new File(targetDirectory, "destination.png");
-		subject = new WebDriverExtension(() -> driver, context -> destination);
 		subject.getDriver();
 		given(context.getExecutionException()).willReturn(Optional.of(new AssertionError()));
-		given(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)).willReturn(original);
+		given(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE)).willReturn(sourceScreenshot);
 
 		// When
 		subject.afterEach(context);
 
 		// Then
-		assertTrue(destination.exists());
+		assertTrue(destinationScreenshot.exists());
 	}
 
 	@Test
@@ -87,15 +90,14 @@ class WebDriverExtensionTest {
 		subject.afterEach(context);
 
 		// Then
-		verify(((TakesScreenshot) driver), never()).getScreenshotAs(any(OutputType.class));
+		assertFalse(destinationScreenshot.exists());
 	}
 
 	@Test
 	void skipsRecordingOfScreenshotWhenUnsupportedByDriver() {
 		// Given
 		subject = new WebDriverExtension(
-				() -> mock(WebDriver.class),
-				context -> fail("Should not be called")
+				() -> mock(WebDriver.class), context -> destinationScreenshot
 		);
 		subject.getDriver();
 		given(context.getExecutionException()).willReturn(Optional.of(new AssertionError()));
@@ -104,6 +106,6 @@ class WebDriverExtensionTest {
 		subject.afterEach(context);
 
 		// Then
-		verify(((TakesScreenshot) driver), never()).getScreenshotAs(any(OutputType.class));
+		assertFalse(destinationScreenshot.exists());
 	}
 }
