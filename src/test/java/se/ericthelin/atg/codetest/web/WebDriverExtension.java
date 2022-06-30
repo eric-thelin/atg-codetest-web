@@ -22,12 +22,12 @@ class WebDriverExtension implements AfterEachCallback {
 	}
 
 	@Override
-	public void afterEach(ExtensionContext extensionContext) {
+	public void afterEach(ExtensionContext context) {
 		if (driver == null) {
 			return;
 		}
-		if (extensionContext.getExecutionException().isPresent()) {
-			handleFailure(extensionContext);
+		if (context.getExecutionException().isPresent()) {
+			handleFailure(context);
 		}
 		driver.quit();
 	}
