@@ -6,6 +6,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.function.Function;
 
 class ScreenshotRecorder implements WebDriverFailureListener {
@@ -39,6 +40,10 @@ class ScreenshotRecorder implements WebDriverFailureListener {
 
 	private void recordScreenshot(TakesScreenshot source, File destination) {
 		log.recordAttemptToSaveScreenshot(destination);
-		fileSystem.write(source.getScreenshotAs(OutputType.BYTES), destination);
+		try {
+			fileSystem.write(source.getScreenshotAs(OutputType.BYTES), destination);
+		} catch (IOException e) {
+			log.recordFailureToSaveScreenshot(destination, e);
+		}
 	}
 }

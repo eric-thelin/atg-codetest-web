@@ -11,11 +11,15 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
+import java.io.IOException;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class ScreenshotRecorderTest {
@@ -41,7 +45,7 @@ class ScreenshotRecorderTest {
 	}
 
 	@Test
-	void recordsScreenshot() {
+	void recordsScreenshot() throws IOException {
 		// Given
 		given(driver.getScreenshotAs(OutputType.BYTES)).willReturn("screenshot".getBytes());
 
@@ -55,6 +59,23 @@ class ScreenshotRecorderTest {
 		verify(fileSystem).write(
 				"screenshot".getBytes(),
 				screenshotDestination.getAbsoluteFile()
+		);
+		verifyNoMoreInteractions(log);
+	}
+
+	@Test
+	void logsFailureToRecordScreenshot() throws IOException {
+		// Given
+		IOException cause = new IOException();
+		given(driver.getScreenshotAs(OutputType.BYTES)).willReturn("screenshot".getBytes());
+		willThrow(cause).given(fileSystem).write(any(), any());
+
+		// When
+		subject.processFailure(context, (WebDriver) driver);
+
+		// Then
+		verify(log).recordFailureToSaveScreenshot(
+				screenshotDestination.getAbsoluteFile(), cause
 		);
 	}
 
