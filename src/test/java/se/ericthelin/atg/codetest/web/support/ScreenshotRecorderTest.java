@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openqa.selenium.OutputType;
@@ -12,14 +11,11 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class ScreenshotRecorderTest {
@@ -29,21 +25,22 @@ class ScreenshotRecorderTest {
 
 	@Mock
 	private ExtensionContext context;
+	@Mock
+	private FileSystem fileSystem;
 
-	@TempDir
-	private File targetDirectory;
-	private File destinationScreenshot;
+	private final File destinationScreenshot = new File("screenshot.png");
 
 	private ScreenshotRecorder subject;
 
 	@BeforeEach
 	void setUp() {
-		destinationScreenshot = new File(targetDirectory, "screenshot.png");
-		subject = new ScreenshotRecorder(context -> destinationScreenshot);
+		subject = new ScreenshotRecorder(
+				context -> destinationScreenshot, fileSystem
+		);
 	}
 
 	@Test
-	void recordsScreenshot() throws IOException {
+	void recordsScreenshot() {
 		// Given
 		given(driver.getScreenshotAs(OutputType.BYTES)).willReturn("screenshot".getBytes());
 
@@ -51,8 +48,10 @@ class ScreenshotRecorderTest {
 		subject.processFailure(context, (WebDriver) driver);
 
 		// Then
-		assertTrue(destinationScreenshot.exists());
-		assertEquals("screenshot", contentsOf(destinationScreenshot));
+		verify(fileSystem).write(
+				"screenshot".getBytes(),
+				destinationScreenshot.getAbsoluteFile()
+		);
 	}
 
 	@Test
@@ -61,10 +60,6 @@ class ScreenshotRecorderTest {
 		subject.processFailure(context, mock(WebDriver.class));
 
 		// Then
-		assertFalse(destinationScreenshot.exists());
-	}
-
-	private String contentsOf(File source) throws IOException {
-		return Files.readString(source.toPath());
+		verifyNoInteractions(fileSystem);
 	}
 }
