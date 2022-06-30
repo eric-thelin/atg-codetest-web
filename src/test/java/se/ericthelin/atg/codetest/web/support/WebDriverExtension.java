@@ -20,7 +20,7 @@ public class WebDriverExtension implements AfterEachCallback {
 
 	public WebDriverExtension() {
 		this(() -> new RemoteWebDriver(new ChromeOptions()),
-				context -> new File(context.getUniqueId() + ".failure.png")
+				context -> new File("target/selenium/" + context.getUniqueId() + ".failure.png")
 		);
 	}
 
