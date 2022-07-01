@@ -9,7 +9,7 @@ class RealFileSystem implements FileSystem {
 	public void write(byte[] source, File destination) throws IOException {
 		if (!destination.getParentFile().exists() && !destination.getParentFile().mkdirs()) {
 			throw new IOException(String.format(
-					"Could not create screenshot directory \"%s\"",
+					"Could not create directory \"%s\"",
 					destination.getParentFile()
 			));
 		}
