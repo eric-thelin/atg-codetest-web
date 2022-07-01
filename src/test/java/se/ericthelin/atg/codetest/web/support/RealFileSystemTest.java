@@ -39,7 +39,7 @@ class RealFileSystemTest {
 	}
 
 	@Test
-	void abortsWhenUnableToCreateParentDirectories() throws IOException {
+	void abortsWhenUnableToCreateParentDirectories() {
 		// Given
 		File readOnlyDirectory = new File(root, "a/b/c");
 		assertTrue(readOnlyDirectory.mkdirs());
