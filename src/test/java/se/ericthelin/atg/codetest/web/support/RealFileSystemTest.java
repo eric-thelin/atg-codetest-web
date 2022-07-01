@@ -10,7 +10,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -47,15 +50,15 @@ class RealFileSystemTest {
 		File destination = new File(readOnlyDirectory, "d/out.txt");
 
 		// When
-		String message = assertThrows(IOException.class, () ->
+		IOException actual = assertThrows(IOException.class, () ->
 				subject.write("foo".getBytes(StandardCharsets.UTF_8), destination)
-		).getMessage();
+		);
 
 		// Then
-		assertAll("Unexpected message: " + message,
-				() -> assertTrue(message.startsWith("Could not create directory")),
-				() -> assertTrue(message.contains(readOnlyDirectory.getAbsolutePath()))
-		);
+		assertThat(actual.getMessage(), allOf(
+				startsWith("Could not create directory"),
+				containsString(readOnlyDirectory.getAbsolutePath())
+		));
 	}
 
 	private String contentsOf(File source) throws IOException {
